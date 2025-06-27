@@ -7,7 +7,7 @@ from tracking import tracker, annotate_tracked
 def main():
     video_path = "data/test4.MOV"
     frame_queue = queue.Queue()
-    interval=0
+    interval=1
     extractor_thread = extract_frames_to_queue(video_path, frame_queue, interval=interval)
 
     while True:
