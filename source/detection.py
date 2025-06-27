@@ -1,10 +1,12 @@
 from ultralytics import NAS
 
+
+
 # Load YOLO-NAS model
 model = NAS("model/yolo_nas_s.pt").to("cuda")  # Must support COCO class 0 = person, 67 = cellphone
 
 def detect_persons_and_phones(frame, conf_thresh=0.3):
-    results = model(frame, imgsz=640)[0]  # Run inference, get first result
+    results = model(frame, imgsz=640,verbose=False)[0]
     persons, phones = [], []
 
     for box in results.boxes:
