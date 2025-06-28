@@ -27,6 +27,8 @@ def is_inside(person_box, phone_box):
     )
 
 def annotate_tracked(frame, tracked_persons, phones):
+    using_phone_ids = []
+
     for track in tracked_persons:
         if not track.is_confirmed():
             continue
@@ -38,7 +40,10 @@ def annotate_tracked(frame, tracked_persons, phones):
         near_phone = any(
             is_inside(person_box, phone_box) or is_near(person_box, phone_box, threshold=80)
             for phone_box, _ in phones
-)
+        )
+
+        if near_phone:
+            using_phone_ids.append(track_id)
 
         color = (0, 0, 255) if near_phone else (0, 255, 0)
         label = f"ID {track_id}" + (" 📱" if near_phone else "")
@@ -52,4 +57,5 @@ def annotate_tracked(frame, tracked_persons, phones):
         cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 255, 0), 1)
         cv2.putText(frame, f"phone {conf:.2f}", (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 1)
 
-    return frame
+    return frame, using_phone_ids
+
